@@ -68,7 +68,9 @@ def get_all_bahan():
             nama = str(r.get("Nama Bahan", "")).strip()
             kat  = str(r.get("Kategori", "")).strip()
             try:
-                harga = float(str(r.get("Harga Database", "0")).replace(".", "").replace(",", ""))
+                raw = str(r.get("Harga Database", "0"))
+                raw = raw.replace("Rp", "").replace(" ", "").replace(".", "").replace(",", "")
+                harga = float(raw) if raw else 0.0
             except ValueError:
                 harga = 0.0
             if nama:
