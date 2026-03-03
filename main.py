@@ -57,7 +57,7 @@ def get_all_bahan():
     try:
         logger.info(f"Mencoba buka spreadsheet: {os.environ.get('SPREADSHEET_ID')}")
         records = ws["db"].get_all_records(
-            expected_headers=["Nama Bahan", "Kategori", "Harga Beli Real"],
+            expected_headers=["Nama Bahan", "Kategori", "Harga Database"],
             head=2  # header ada di baris ke-2
         )
         logger.info(f"Berhasil ambil {len(records)} baris dari Database Bahan")
@@ -68,7 +68,7 @@ def get_all_bahan():
             nama = str(r.get("Nama Bahan", "")).strip()
             kat  = str(r.get("Kategori", "")).strip()
             try:
-                harga = float(str(r.get("Harga Beli Real", "0")).replace(".", "").replace(",", ""))
+                harga = float(str(r.get("Harga Database", "0")).replace(".", "").replace(",", ""))
             except ValueError:
                 harga = 0.0
             if nama:
