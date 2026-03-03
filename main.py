@@ -56,7 +56,10 @@ ws = init_sheets()
 def get_all_bahan():
     try:
         logger.info(f"Mencoba buka spreadsheet: {os.environ.get('SPREADSHEET_ID')}")
-        records = ws["db"].get_all_records()
+        records = ws["db"].get_all_records(
+            expected_headers=["Nama Bahan", "Kategori", "Harga Beli Real"],
+            head=2  # header ada di baris ke-2
+        )
         logger.info(f"Berhasil ambil {len(records)} baris dari Database Bahan")
         if records:
             logger.info(f"Contoh baris pertama: {records[0]}")
