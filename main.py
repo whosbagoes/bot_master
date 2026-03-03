@@ -1,4 +1,4 @@
-import os 
+import os
 import json
 import logging
 import gspread
@@ -55,8 +55,13 @@ ws = init_sheets()
 # ── FUNGSI SHEETS ─────────────────────────────────────────────────────────────
 def get_all_bahan():
     try:
+        logger.info(f"Mencoba buka spreadsheet: {os.environ.get('SPREADSHEET_ID')}")
+        records = ws["db"].get_all_records()
+        logger.info(f"Berhasil ambil {len(records)} baris dari Database Bahan")
+        if records:
+            logger.info(f"Contoh baris pertama: {records[0]}")
         result = []
-        for r in ws["db"].get_all_records():
+        for r in records:
             nama = str(r.get("Nama Bahan", "")).strip()
             kat  = str(r.get("Kategori", "")).strip()
             try:
@@ -65,9 +70,10 @@ def get_all_bahan():
                 harga = 0.0
             if nama:
                 result.append({"nama": nama, "kategori": kat, "harga": harga})
+        logger.info(f"Total bahan valid: {len(result)}")
         return result
     except Exception as e:
-        logger.error(f"get_all_bahan: {e}")
+        logger.error(f"get_all_bahan ERROR: {type(e).__name__}: {e}")
         return []
 
 def catat_pembelian(tgl, user, bahan, kategori, qty, satuan, harga):
